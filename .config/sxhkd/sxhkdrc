@@ -81,12 +81,12 @@ super + e
     bspc monitor -f next
 
 # Super key changes left monitor desktop
-super + {_,shift + }{1-9,0}
-    bspc {desktop -f, window -d} {i, ii, iii, iv, v, vi, vii, viii, ix, x}
+#super + {_,shift + }{1-9,0}
+#    bspc {desktop -f, window -d} {i, ii, iii, iv, v, vi, vii, viii, ix, x}
 
 # super + alt key changes right monitor desktops
 super + alt + {_,shift + }{1-9,0}
-    bspc {desktop -f, window -d} {I, II, III, IV, V, VI, VII, VIII, IX, X}
+    bspc {desktop -f, window -d} {CRT1-1, CRT1-2, CRT1-3, CRT1-4, CRT1-5, CRT1-6, CRT1-7, CRT1-8, CRT1-9, CRT1-10}
 
 #
 # wm independent hotkeys

@@ -1,21 +1,33 @@
 #! /bin/sh
-FIRST_DESK_MAIN=i
-REMAINING_DESKS_MAIN="ii iii iv v vi vii viii ix x"
-FIRST_DESK_SECONDARY=I
-REMAINING_DESKS_SECONDARY="II III IV V VI VII VIII IX X"
+# FIRST_DESK_MAIN=i
+# REMAINING_DESKS_MAIN="ii iii iv v vi vii viii ix x"
+# FIRST_DESK_SECONDARY=I
+# REMAINING_DESKS_SECONDARY="II III IV V VI VII VIII IX X"
 
-MONITORS_ASSOCIATED=`bspc query -M | wc -l`
+# MONITORS_ASSOCIATED=`bspc query -M | wc -l`
 
-bspc desktop Dextop01 -n $FIRST_DESK_MAIN
-bspc monitor -a $REMAINING_DESKS_MAIN
+# bspc desktop Desktop01 -n $FIRST_DESK_MAIN
+# bspc monitor -a $REMAINING_DESKS_MAIN
+
+# bspc config -m CRT1 top_padding 14
+
+# bspc monitor -f next
+
+# bspc desktop Desktop02 -n $FIRST_DESK_SECONDARY
+# bspc monitor -a $REMAINING_DESKS_SECONDARY
+
+# bspc config -m DFP3 top_padding 14
+
+# Monitor setup
+for m in $(bspc query -M); do
+        bspc desktop $(bspc query -m $m -D) -n "$m-1"
+
+        for d in $(seq 2 7); do
+                bspc monitor $m -a "$m-$d"
+        done
+done
 
 bspc config -m CRT1 top_padding 14
-
-bspc monitor -f next
-
-bspc desktop Desktop02 -n $FIRST_DESK_SECONDARY
-bspc monitor -a $REMAINING_DESKS_SECONDARY
-
 bspc config -m DFP3 top_padding 14
 
 # move the focus to the main monitor
@@ -39,5 +51,6 @@ rulc -a 'instance=="mpv"' 'floating=on'
 rulc -a 'class=="Kupfer.py"' 'focus=on'
 rulc -a 'class=="Screenkey"' 'manage=off'
 
-panel bar &
+# panel bar &
+single-panel.sh &
 
