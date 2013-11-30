@@ -6,19 +6,23 @@ while read -r line ; do
 case $line in
         S*)
             # clock output
-            sys_infos="\\br\\f6${line#?}"
+            sys_infos="\\br\\f7${line#?}"
             ;;
         T*)
             # xtitle output
             title="\\br\\f7${line#?}"
             ;;
+        Z*)
+            # ncmpcpp output
+            music="\\br\\f5${line#?}"
+            ;;
         W*)
             # bspwm internal state
-            wm_infos=""
+            wm_infos="\\l"
             IFS=':'
             set -- ${line#?}
             while [ $# -gt 0 ] ; do
-				item=$1
+                item=$1
                 name=${item#?}
                 case $item in
                     O*)
@@ -47,13 +51,15 @@ case $line in
                         ;;
                     L*)
                         # layout
+                        #layout=""
+                        #wm_infos="$wm_infos \\b4\\f8$layout\\br\\fr"
                         layout=$(printf "%s" "${name}" | sed 's/\(.\).*/\U\1/')
                         wm_infos="$wm_infos \\br\\f6$layout"
                         ;;
                 esac
-				shift
-			done
+                shift
+            done
             ;;
     esac
-	printf "%s\n" "\\l $wm_infos \\c $title \\r $sys_infos "
+    printf "%s\n" "\\s1 \\l $wm_infos \\c $title \\r $music $sys_infos                                  "
 done
