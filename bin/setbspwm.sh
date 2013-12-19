@@ -6,7 +6,8 @@ compton --config ~/.compton.conf &
 wmname LG3D
 
 # Set background image
-feh --bg-tile $HOME/Imágenes/wallpapers/capheine.png
+#feh --bg-tile $HOME/Imágenes/wallpapers/capheine.png
+wallpaper.sh
 
 # Tray bar
 trayer --edge top --align right --SetDockType true --SetPartialStrut true  --expand true --widthtype pixel --width 191 --transparent true --alpha 0 --tint 0x232C31 --height 18 --margin 1441 &
