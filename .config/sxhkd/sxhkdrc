@@ -64,6 +64,21 @@ super + ctrl + {1-9}
 super + {_,shift + }{1-9,0}
     bspc {desktop -f,window -d} ^{1-9,10}
 
+#super + {1-9,0}
+#	D={1-9,0}; \ 
+#	M=$(bspc query --monitors --desktop $D); \ 
+#	S=$(scratchpad-); \ 
+#	[ $(bspc query --desktops --monitor $M | wc -l) -gt 1 ] && ( \  
+#		[ $(bspc query --desktops --desktop focused) == $D ] || ( \  
+#			bspc desktop $D --to-monitor focused; \  
+#			bspc desktop $D --focus; ) ) \  
+#	|| [ $(bspc query --monitors --monitor focused) == $M ] || \  
+#		bspc desktop focused:DVI-0 -s focused:DVI-1; \ 
+#	scratchpad+ $S
+
+XF86Calculator
+    gnome-calculator
+
 ~button1
     bspc pointer -g focus
 
@@ -86,7 +101,7 @@ super + e
 
 # super + alt key changes right monitor desktops
 super + alt + {_,shift + }{1-9,0}
-    bspc {desktop -f, window -d} {CRT1-1, CRT1-2, CRT1-3, CRT1-4, CRT1-5, CRT1-6, CRT1-7, CRT1-8, CRT1-9, CRT1-10}
+    bspc {desktop -f, window -d} {Desktop2, Web2, Transfer, Ex1, Ex2, Ex3, Ex4, Ex5, Ex6, Ex7}
 
 #
 # wm independent hotkeys
@@ -96,7 +111,7 @@ super + Return
     urxvt
 
 super + p
-    dmenu_run
+    dmenu_run -l 30 -fn 'xft:Mensch for Powerline:size=10:hinting=slight:antialias=true' -nb '#3F3F3F' -nf '#DCDCCC' -sb '#1E2320'
 
 # make sxhkd reload its configuration files:
 super + Escape
