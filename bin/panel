@@ -15,14 +15,17 @@ mkfifo "$PANEL_FIFO"
 bspc config top_padding $PANEL_HEIGHT
 
 bspc control --subscribe > "$PANEL_FIFO" &
-#bspc control --put-status
+
 xtitle -sf 'T%s' > "$PANEL_FIFO" &
-clock -sf 'S%a %H:%M' > "$PANEL_FIFO" &
+#clock -sf 'S%a %d/%m %H:%M' > "$PANEL_FIFO" &
+#echo "T" > "$PANEL_FIFO" &
 echo 'Z' `ncmpcpp --now-playing %a' - '%t` > "$PANEL_FIFO" &
+echo "S" > "$PANEL_FIFO" & 
+conky -c ~/bin/panel_conky > "$PANEL_FIFO" &
 
 case "$flavor" in
     bar)
-        cat "$PANEL_FIFO" | panel_bar | bar-aint-recursive -f &
+        cat "$PANEL_FIFO" | panel_bar | bar-aint-recursive &
         ;;
     dzen2)
         . panel_colors

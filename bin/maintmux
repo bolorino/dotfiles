@@ -9,7 +9,9 @@ if [ "$?" -eq 1 ] ; then
     tmux new-window -n music -t main
 
     #Music
-    tmux send-keys -t main:2 'mpd' C-m
+    # mpd started as daemon
+    #tmux send-keys -t main:2 'mpd' C-m
+    tmux send-keys -t main:2 'mpdscribble' C-m
     tmux send-keys -t main:2 'ncmpcpp' C-m
 
     #Monitor

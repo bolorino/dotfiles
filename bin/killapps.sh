@@ -2,7 +2,7 @@
 # Kill additional apps on exit
 
 # Background apps
-apps=( compton dropboxd ubuntuone-launch single-panel.sh trayer )
+apps=( compton dropboxd single-panel.sh trayer )
 
 for app in "${apps[@]}"
 do
