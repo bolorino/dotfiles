@@ -1,38 +1,160 @@
-#! /bin/sh
+#! /bin/zsh
 
+. panel_colors
+
+PANEL_FIFO=/tmp/panel-fifo
+PANEL_HEIGHT=18
+PANEL_FONT_FAMILY="Mensch for Powerline:size=9"
+ICON_FONT="FontAwesome:size=10"
+ICON_FONT2="Oxygen Mono:size=10"
+#WIFI_INTERFACE="wlp2s0"
+
+# check if panel is already running
 if [ $(pgrep -cx panel) -gt 1 ] ; then
-printf "%s\n" "The panel is already running." >&2
-    exit 1
+	printf "%s\n" "The panel is already running." >&2
+	exit 1
 fi
 
+# exit gracefully if terminated
 trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
 
-flavor=${1:-bar}
-
+# remove old panel fifo, creat new one
 [ -e "$PANEL_FIFO" ] && rm "$PANEL_FIFO"
 mkfifo "$PANEL_FIFO"
 
-bspc config top_padding $PANEL_HEIGHT
+# set up bspwm to not overlap the panel
+#bspc config top_padding $PANEL_HEIGHT
 
+# get bspwms status feed
 bspc control --subscribe > "$PANEL_FIFO" &
 
+# window title
 xtitle -sf 'T%s' > "$PANEL_FIFO" &
-#clock -sf 'S%a %d/%m %H:%M' > "$PANEL_FIFO" &
-#echo "T" > "$PANEL_FIFO" &
-echo 'Z' `ncmpcpp --now-playing %a' - '%t` > "$PANEL_FIFO" &
-echo "S" > "$PANEL_FIFO" & 
-conky -c ~/bin/panel_conky > "$PANEL_FIFO" &
 
-case "$flavor" in
-    bar)
-        cat "$PANEL_FIFO" | panel_bar | bar-aint-recursive &
-        ;;
-    dzen2)
-        . panel_colors
-        FONT_FAMILY='DejaVu Sans'
-        FONT_SIZE=11
-        cat "$PANEL_FIFO" | panel_dzen2 -f "$FONT_FAMILY" -s "$FONT_SIZE" | dzen2 -h $PANEL_HEIGHT -dock -ta l -title-name panel -fn "${FONT_FAMILY}:pixelsize=${FONT_SIZE}" -fg "$COLOR_FOREGROUND" -bg "$COLOR_BACKGROUND" &
-        ;;
-esac
+# clock
+while true;
+	do
+		# clock icon is \uf017 if you want to add it
+		echo "C\uf017 $(date +"%H:%M %p") "
+	sleep 30;
+done > "$PANEL_FIFO" &
+
+# date
+while true;
+	do
+		# calendar icon is \uf073 if you want to add it
+		echo "D\uf073 $(date +'%a, %d %b')"
+	sleep 60
+done > $PANEL_FIFO &
+
+# battery
+# while true;
+# do
+# BATT_LEVEL=$(acpi -b | grep -o '[[:digit:]]\+%' | sed 's/%//')
+# 	if [ $BATT_LEVEL -ge 80 ]
+# 	then
+# 		BATT_ICON='B\uf240'
+# 	elif [ $BATT_LEVEL -ge 60 -a $BATT_LEVEL -lt 80 ]
+# 	then
+# 		BATT_ICON='B\uf241'
+# 	elif [ $BATT_LEVEL -ge 40 -a $BATT_LEVEL -lt 60 ]
+# 	then
+# 		BATT_ICON='B\uf242'
+# 	elif [ $BATT_LEVEL -ge 20 -a $BATT_LEVEL -lt 40 ]
+# 	then
+# 		BATT_ICON='B\uf243'
+# 	elif [ $BATT_LEVEL $BATT_LEVEL -lt 20 ]
+# 	then
+# 		BATT_ICON='B\uf244'
+# 	fi
+# 	#uncomment next and delete the line after that to see percentage
+# 	#echo $BATT_ICON $BATT_LEVEL%
+# 	echo $BATT_ICON
+# 	sleep 30;
+# done > "$PANEL_FIFO" &
+
+# alsa volume
+# while true;
+# do
+# ALSA_VOLUME=$(amixer get Master | grep 'Mono: Playback' | grep -o '...%' | sed 's/\[//' | sed 's/%//' | sed 's/ //')
+# ALSA_STATE=$(amixer get Master | grep 'Mono: Playback' | grep -o '\[on]')
+
+# if [ $ALSA_STATE ]
+# then
+# 	if [ $ALSA_VOLUME -ge 70 ]
+# 	then
+# 		VOLUME_ICON='\uf028'
+# 	elif [ $ALSA_VOLUME -gt 0 -a $ALSA_VOLUME -lt 70 ]
+# 	then
+# 		VOLUME_ICON='\uf027'
+# 	elif [ $ALSA_VOLUME -eq 0 ]
+# 		VOLUME_ICON='\uf026'
+# 	else
+# 		VOLUME_ICON='\uf026'
+# 	fi
+# 	# uncomment next and delte the line after that to see volume percentage
+# 	#echo V$VOLUME_ICON $ALSA_VOLUME
+# 	echo V$VOLUME_ICON
+# 	sleep 1.0
+# done > $PANEL_FIFO &
+
+# weechat (work in progress)
+# while true;
+# do
+# 	WEECHAT_ICON='\uf0e5'
+# 	echo w$WEECHAT_ICON
+# 	sleep 5
+# done > $PANEL_FIFO &
+
+# wifi
+# while true;
+# do
+# WIFI_SSID=$(iw $WIFI_INTERFACE link | grep 'SSID' | sed 's/SSID: //' | sed 's/\t//')
+# WIFI_SIGNAL=$(iw $WIFI_INTERFACE link | grep 'signal' | sed 's/signal: //' | sed 's/ dBm//' | sed 's/\t//')
+# 	if [[ $(iw $WIFI_INTERFACE link) != "Not connected." ]]
+# 	then
+# 		if [ $WIFI_SIGNAL -ge -67 ]
+# 		then
+# 			WIFI_COLOR=$COLOR_SIGNAL_HIGH
+# 		elif [ $WIFI_SIGNAL -ge -70 -a $WIFI_SIGNAL -lt -67 ]
+# 		then
+# 			WIFI_COLOR=$COLOR_SIGNAL_MEDIUM
+# 		elif [ $WIFI_SIGNAL -ge -80 -a $WIFI_SIGNAL -lt -70 ]
+# 		then
+# 			WIFI_COLOR=$COLOR_SIGNAL_LOW
+# 		fi
+# 		echo "L%{F$WIFI_COLOR}\uf1eb%{F-}"
+# 	else
+# 		WIFI_COLOR=$COLOR_SIGNAL_NONE
+# 		echo "L%{F$WIFI_COLOR}\uf072%{F-}"
+# 	fi
+# 		sleep 10
+# done > $PANEL_FIFO &
+
+# music controls
+while true;
+do
+	SONG_NAME=$(mpc current)
+	if [[ -z $(mpc current) ]]
+	then
+		# no music in playlist, or mpd is not running
+		#echo "R%{F$COLOR_INACTIVE_MONITOR_FG}%{T3}%{A:mpc listall | mpc add; mpc shuffle; mpc play:}%{A3:mpd:}\uf19c  \uf198  \uf17c%{A}%{A}%{T1}%{F-}"
+		echo "R "
+	else
+		if [[ -n $(mpc status | grep paused) ]]
+		then
+			# music is paused
+			echo "R%{F$COLOR_INACTIVE_MONITOR_FG}%{T3}%{A:mpc prev:}\uf19c %{A}%{A:mpc play:}%{A3:mpc clear:}$SONG_NAME%{A}%{A}%{A:mpc next:} \uf17c%{A}%{T1}%{F-}"
+		else
+			# music is playing
+			#echo "R%{F$COLOR_FOCUSED_OCCUPIED_FG}%{T3}%{A:mpc prev:}\uf19c %{A}%{A:mpc pause:}%{A3:mpc clear:}$SONG_NAME%{A}%{A}%{A:mpc next:} \uf17c%{A}%{T1}%{F-}"
+			echo "R%{F$COLOR_FOCUSED_OCCUPIED_FG}$SONG_NAME%{A}%{A}c%{A}"
+		fi
+	fi
+	sleep 1.0
+done > $PANEL_FIFO &
+
+# dump panel into panel_bar and then into lemonbar
+cat "$PANEL_FIFO" | panel_bar | lemonbar -g x$PANEL_HEIGHT -f "$PANEL_FONT_FAMILY" -f "$ICON_FONT" -f "$ICON_FONT2" -F "$COLOR_FOREGROUND" -B "$COLOR_BACKGROUND" -u 2 | zsh &
 
 wait

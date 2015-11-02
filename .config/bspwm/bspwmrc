@@ -1,72 +1,31 @@
 #! /bin/sh
-# FIRST_DESK_MAIN=i
-# REMAINING_DESKS_MAIN="ii iii iv v vi vii viii ix x"
-# FIRST_DESK_SECONDARY=I
-# REMAINING_DESKS_SECONDARY="II III IV V VI VII VIII IX X"
 
-# MONITORS_ASSOCIATED=`bspc query -M | wc -l`
+bspc desktop VGA-0 -n "Web"
+bspc monitor VGA-0 -a "Edit"
+bspc monitor VGA-0 -a "Mail"
+bspc monitor VGA-0 -a "Virtual"
+bspc monitor VGA-0 -a "Chromium"
 
-# bspc desktop Desktop01 -n $FIRST_DESK_MAIN
-# bspc monitor -a $REMAINING_DESKS_MAIN
+bspc desktop DVI-1 -n "Main"
+bspc monitor DVI-1 -a "Pass"
+bspc monitor DVI-1 -a "Devel"
+bspc monitor DVI-1 -a "Graph"
+bspc monitor DVI-1 -a "Vector"
+bspc monitor DVI-1 -a "VMachine"
 
-# bspc config -m CRT1 top_padding 14
-
-# bspc monitor -f next
-
-# bspc desktop Desktop02 -n $FIRST_DESK_SECONDARY
-# bspc monitor -a $REMAINING_DESKS_SECONDARY
-
-# bspc config -m DFP3 top_padding 14
-
-# Monitor setup
-#for m in $(bspc query -M); do
-#        bspc desktop $(bspc query -m $m -D) -n "$m-1"
-
-#        for d in $(seq 2 7); do
-#                bspc monitor $m -a "$m-$d"
-#        done
-#done
-
-#Desktop[1]='Main'
-Desktop[2]='Background'
-Desktop[3]='Devel'
-Desktop[4]='Graph'
-Desktop[5]='Edit'
-Desktop[6]='Other'
-Desktop[7]='Mail'
-
-#Second[1]='Web'
-Second[2]='Web2'
-Second[3]='Transfer'
-Second[4]='Ex1'
-Second[5]='Ex2'
-Second[6]='Ex3'
-Second[7]='Ex4'
-
-bspc desktop DFP3 -n "Main"
-
-for d in ${Desktop[@]}; do
-    bspc monitor DFP3 -a "$d"
-done
-
-bspc desktop CRT1 -n "Web"
-
-for e in ${Second[@]}; do
-    bspc monitor CRT1 -a "$e"
-done
-
-bspc config -m CRT1 top_padding 14
-bspc config -m DFP3 top_padding 14
+bspc config -m DVI-1 top_padding 14
+bspc config -m DVI-1 bottom_padding 14
+bspc config -m VGA-0 top_padding 14
 
 # move the focus to the main monitor
-bspc monitor -f primary
+bspc monitor -f DVI-1
 
 bspc config border_width 2
-bspc config window_gap 12
-bspc config split_ratio 0.52
+bspc config window_gap 48
+bspc config split_ratio 0.50
 bspc config borderless_monocle true
 bspc config gapless_monocle true
-bspc config focused_border_color "#D35600"
+bspc config focused_border_color "#4783BE"
 bspc config normal_border_color "#7A6953"
 bspc config focus_follows_pointer true
 
@@ -75,14 +34,14 @@ bspc config wm_name LG3D
 # Rules
 # bspc config rule_command "$(which rule_command)"
 #bspwm_rules
-bspc rule -a Firefox desktop=^8
+bspc rule -a Firefox desktop=^7
 bspc rule -a sublime_text desktop=^3
 bspc rule -a Gimp desktop=^4 floating=on
-bspc rule -a Chromium desktop=^9
-bspc rule -a Qbittorrent desktop=^10
+bspc rule -a Chromium desktop=^11
 bspc rule -a file-roller floating=on
 bspc rule -a vlc floating=on
-bspc rule -a SuperTuxkart floating=on
 bspc rule -a recordMyDesktop floating=on
+bspc rule -a xclock floating=on
+bspc rule -a Thunar floating=on
 
-panel dzen2 &
+panel &

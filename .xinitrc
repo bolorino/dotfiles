@@ -11,7 +11,7 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
   unset f
 fi
 
-xrdb -merge ~/.Xdefaults
+xrdb -merge ~/.Xresources
 
 #set the cursor
 xsetroot -cursor_name left_ptr
@@ -27,8 +27,7 @@ session=${1:-bspwm}
 case $session in
 bspwm)
     sxhkd &
-    xrandr --output DFP3 --primary
-    xrandr --output CRT1 --right-of DFP3
+    xrandr --output VGA0 --mode 1440x900 --pos 0x0 --rotate normal --output DVI-1 --mode 1920x1080 --pos 1440x0 --rotate normal --output DVI-0 --off --output HDMI-0 --off
     [ -e "$PANEL_FIFO" ] && rm "$PANEL_FIFO"
     mkfifo "$PANEL_FIFO"
     exec bspwm
@@ -39,7 +38,7 @@ xfce4)
 gnome)
     exec gnome-session
     ;;
-kde)
-    exec startkde
+wmaker)
+    exec wmaker
     ;;
 esac
