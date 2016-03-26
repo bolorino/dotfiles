@@ -10,17 +10,16 @@ if [ "$?" -eq 1 ] ; then
 
     #Music
     # mpd started as daemon
-    #tmux send-keys -t main:2 'mpd' C-m
     tmux send-keys -t main:2 'mpdscribble' C-m
     tmux send-keys -t main:2 'ncmpcpp' C-m
 
-    #Monitor
-    tmux new-window -n monitor -t main
-    #tmux send-keys -t main:3 'htop' C-m
+    # Servers
+    tmux new-window -n server -t main
+    tmux send-keys -t main:3 'ssh helicon' C-m
     tmux split-window -h
-    #tmux split-window -h
-    #tmux select-pane -L
-    #tmux resize-pane -R 20
+
+    tmux split-window -v
+    tmux select-pane -R
 
     tmux select-window -t main:1
     tmux attach -t main

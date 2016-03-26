@@ -1,0 +1,49 @@
+#! /bin/sh
+# bspwm dual monitor configuration
+
+# Monitor setup
+bspc desktop VGA-0 -n "Main"
+bspc monitor VGA-0 -a "Web"
+bspc monitor VGA-0 -a "Devel"
+bspc monitor VGA-0 -a "Graph"
+bspc monitor VGA-0 -a "Chromium"
+bspc monitor VGA-0 -a "VMachine"
+
+bspc desktop DVI-1 -n "Util"
+bspc monitor DVI-1 -a "Edit"
+bspc monitor DVI-1 -a "Mail"
+bspc monitor DVI-1 -a "Virtual"
+bspc monitor DVI-1 -a "Vector"
+
+
+bspc config -m VGA-0 top_padding 14
+bspc config -m DVI-1 top_padding 14
+bspc config -m DVI-1 bottom_padding 14
+
+# move the focus to the main monitor
+bspc monitor -f VGA-0
+
+bspc config border_width 2
+bspc config window_gap 48
+bspc config split_ratio 0.50
+bspc config borderless_monocle true
+bspc config gapless_monocle true
+bspc config focused_border_color "#4783BE"
+bspc config normal_border_color "#7A6953"
+bspc config focus_follows_pointer true
+
+bspc config wm_name LG3D
+
+# Rules
+bspc rule -a Firefox desktop=^2
+#bspc rule -a sublime_text desktop=^3
+bspc rule -a Gimp desktop=^4
+bspc rule -a Chromium desktop=^5
+bspc rule -a Thunderbird desktop=^9
+bspc rule -a file-roller state=floating
+bspc rule -a vlc state=floating
+bspc rule -a recordMyDesktop state=floating
+bspc rule -a xclock state=floating
+bspc rule -a Thunar state=floating
+
+panel &

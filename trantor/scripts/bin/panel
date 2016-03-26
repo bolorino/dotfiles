@@ -1,0 +1,153 @@
+#! /bin/zsh
+
+. panel_colors
+
+PANEL_FIFO=/tmp/panel-fifo
+PANEL_HEIGHT=18
+PANEL_FONT_FAMILY="Mensch for Powerline:size=9"
+ICON_FONT="FontAwesome:size=10"
+ICON_FONT2="Oxygen Mono:size=10"
+
+# check if panel is already running
+if [ $(pgrep -cx panel) -gt 1 ] ; then
+	printf "%s\n" "The panel is already running." >&2
+	exit 1
+fi
+
+# exit gracefully if terminated
+trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
+
+# remove old panel fifo, creat new one
+[ -e "$PANEL_FIFO" ] && rm "$PANEL_FIFO"
+mkfifo "$PANEL_FIFO"
+
+# get bspwms status feed
+bspc subscribe > "$PANEL_FIFO" &
+
+# window title
+xtitle -t 75 -sf 'T%s' > "$PANEL_FIFO" &
+
+# clock
+while true;
+	do
+		echo "C\uf017 $(date +"%H:%M %p") "
+	sleep 30;
+done > "$PANEL_FIFO" &
+
+# date
+while true;
+	do
+		echo "D\uf073 $(date +'%a, %d %b')"
+	sleep 60
+done > $PANEL_FIFO &
+
+# net speed
+# Global variables
+interface=enp3s0
+received_bytes=""
+old_received_bytes=""
+transmitted_bytes=""
+old_transmitted_bytes=""
+
+
+# This function parses /proc/net/dev file searching for a line containing $interface data.
+# Within that line, the first and ninth numbers after ':' are respectively the received and transmited bytes.
+get_bytes()
+{
+    line=$(cat /proc/net/dev | grep $interface | cut -d ':' -f 2 | awk '{print "received_bytes="$1, "transmitted_bytes="$9}')
+    eval $line
+}
+
+
+# Function which calculates the speed using actual and old byte number.
+# Speed is shown in KByte per second when greater or equal than 1 KByte per second.
+# This function should be called each second.
+get_velocity()
+{
+    value=$1
+    old_value=$2
+
+    let vel=$value-$old_value
+    let velKB=$vel/1024
+    let velMB=$velKB/1024
+
+    if [ $velMB -ge 1 ];
+    then
+      echo "$velMB MB/s";
+    elif [ $velKB != 0 ];
+    then
+      echo "$velKB KB/s";
+    else
+      echo "$vel B/s";
+    fi
+}
+
+# Gets initial values.
+get_bytes
+old_received_bytes=$received_bytes
+old_transmitted_bytes=$transmitted_bytes
+
+sleep 1;
+echo "";
+
+
+# Main loop. It will repeat forever.
+while true; 
+do
+
+    # Get new transmitted and received byte number values.
+    get_bytes
+
+    # Calculates speeds.
+    vel_recv=$(get_velocity $received_bytes $old_received_bytes)
+    vel_trans=$(get_velocity $transmitted_bytes $old_transmitted_bytes)
+
+    # Shows results in the console.
+    echo "N %{F$COLOR_NET_DOWN}↓$vel_recv%{F-} %{F$COLOR_NET_UP}↑$vel_trans%{F-} "
+
+    # Update old values to perform new calculations.
+    old_received_bytes=$received_bytes
+    old_transmitted_bytes=$transmitted_bytes
+
+    sleep 1;
+
+done > "$PANEL_FIFO" &
+
+# Current public IP
+while true;
+do
+    PUBLIC_IP=$(curl --connect-timeout 5 -s icanhazip.com)
+    echo "P$PUBLIC_IP"
+    sleep 3600;
+done > "$PANEL_FIFO" &
+
+# music controls
+# Working on it
+while true;
+do
+	SONG_NAME=$(mpc current)
+	if [[ -z $(mpc current) ]]
+	then
+		# no music in playlist, or mpd is not running
+		#echo "R%{F$COLOR_INACTIVE_MONITOR_FG}%{T3}%{A:mpc listall | mpc add; mpc shuffle; mpc play:}%{A3:mpd:}\uf19c  \uf198  \uf17c%{A}%{A}%{T1}%{F-}"
+		echo "R"
+	else
+		if [[ -n $(mpc status | grep paused) ]]
+		then
+			# music is paused
+			#echo "R%{F$COLOR_INACTIVE_MONITOR_FG}%{T3}%{A:mpc prev:}\uf19c %{A}%{A:mpc play:}%{A3:mpc clear:}$SONG_NAME%{A}%{A}%{A:mpc next:} \uf17c%{A}%{T1}%{F-}"
+            echo "R"
+		else
+			# music is playing
+			#echo "R%{F$COLOR_FOCUSED_OCCUPIED_FG}%{T3}%{A:mpc prev:}\uf19c %{A}%{A:mpc pause:}%{A3:mpc clear:}$SONG_NAME%{A}%{A}%{A:mpc next:} \uf17c%{A}%{T1}%{F-}"
+			#echo "R%{F$COLOR_FOCUSED_OCCUPIED_FG}$SONG_NAME%{A}%{A}c%{A}"
+			echo "R%{F$COLOR_MUSIC_PLAY}$SONG_NAME%{F-}"
+		fi
+	fi
+	sleep 1.0
+done > $PANEL_FIFO &
+
+# dump panel into panel_bar and then into lemonbar
+cat "$PANEL_FIFO" | panel_bar | lemonbar -g x$PANEL_HEIGHT -f "$PANEL_FONT_FAMILY" -f "$ICON_FONT" -f "$ICON_FONT2" -F "$COLOR_FOREGROUND" -B "$COLOR_BACKGROUND" -u 2 | zsh &
+
+wait

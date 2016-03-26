@@ -2,7 +2,7 @@
 # Kill additional apps on exit
 
 # Background apps
-apps=( compton dropboxd single-panel.sh trayer )
+apps=( compton owncloud trayer )
 
 for app in "${apps[@]}"
 do

@@ -1,4 +1,0 @@
-# Change Caps Lock to Control
-remove Lock = Caps_Lock
-keycode 0x42 = Control_L
-add Control = Control_L

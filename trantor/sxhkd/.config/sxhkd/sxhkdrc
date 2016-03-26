@@ -6,7 +6,7 @@ super + alt + Escape
     pkill -x panel; killapps; bspc quit
 
 super + w
-    bspc window -c
+    bspc node -c
 
 super + t
     bspc desktop -l next
@@ -15,30 +15,30 @@ super + b
     bspc desktop -B
 
 super + {s,f}
-    bspc window -t {floating,fullscreen}
+    bspc node -t '~{floating,fullscreen}'
 
 super + {grave,Tab}
-    bspc {window,desktop} -f last
+    bspc {node,desktop} -f last
 
 #super + apostrophe
 #    bspc window -s last
 
 super + {o,i}
     bspc control --record-history off; \
-    bspc window {older,newer} -f; \
+    bspc node {older,newer} -f; \
     bspc control --record-history on
 
 super + y
-    bspc window -w last.manual
+    bspc node -w last.manual
 
 super + m
-    bspc window -s biggest
+    bspc node -s biggest
 
 super + {_,shift + }{h,j,k,l}
-    bspc window -{f,s} {left,down,up,right}
+    bspc node -{f,s} {west,south,north,east}
 
 super + {_,shift + }c
-    bspc window -f {next,prev}
+    bspc node -f {next,prev}
 
 super + {comma,period}
     bspc desktop -C {backward,forward}
@@ -47,37 +47,22 @@ super + bracket{left,right}
     bspc desktop -f {prev,next}
 
 super + ctrl + {h,j,k,l}
-    bspc window -p {left,down,up,right}
+    bspc node -p {west,south,north,east}
 
 super + ctrl + {_,shift + }space
-    bspc {window -p cancel,desktop -c}
+    bspc {node -p cancel,desktop -c}
 
 super + alt + {h,j,k,l}
-    bspc window -e {left,down,up,right} push
+    bspc node -e {west,south,north,east} push
 
 super + alt + shift + {h,j,k,l}
-    bspc window -e {right,up,down,left} pull
+    bspc node -e {right,up,down,left} pull
 
 super + ctrl + {1-9}
-    bspc window -r 0.{1-9}
+    bspc node -r 0.{1-9}
 
 super + {_,shift + }{1-9,0}
-    bspc {desktop -f,window -d} ^{1-9,10}
-
-#super + {1-9,0}
-#	D={1-9,0}; \ 
-#	M=$(bspc query --monitors --desktop $D); \ 
-#	S=$(scratchpad-); \ 
-#	[ $(bspc query --desktops --monitor $M | wc -l) -gt 1 ] && ( \  
-#		[ $(bspc query --desktops --desktop focused) == $D ] || ( \  
-#			bspc desktop $D --to-monitor focused; \  
-#			bspc desktop $D --focus; ) ) \  
-#	|| [ $(bspc query --monitors --monitor focused) == $M ] || \  
-#		bspc desktop focused:DVI-0 -s focused:DVI-1; \ 
-#	scratchpad+ $S
-
-XF86Calculator
-    gnome-calculator
+    bspc {desktop -f,node -d} ^{1-9,10}
 
 ~button1
     bspc pointer -g focus
@@ -101,17 +86,24 @@ super + e
 
 # super + alt key changes right monitor desktops
 super + alt + {_,shift + }{1-9,0}
-    bspc {desktop -f, window -d} {Desktop2, Web2, Transfer, Ex1, Ex2, Ex3, Ex4, Ex5, Ex6, Ex7}
+    bspc {desktop -f, node -d} {Desktop2, Edit, Mail, Virtual, Vector}
 
 #
 # wm independent hotkeys
 #
 
 super + Return
-    urxvt
+    roxterm
 
 super + p
-    dmenu_run -l 30 -fn 'xft:Mensch for Powerline:size=10:hinting=slight:antialias=true' -nb '#3F3F3F' -nf '#DCDCCC' -sb '#1E2320'
+    dmenu_run -l 30 -fn 'xft:Mensch for Powerline:size=10:hinting=slight:antialias=true' -nb '#2E3436' -nf '#CFE1FF' -sb '#175CB4'
+
+XF86Calculator
+    gnome-calculator
+
+# Change wallpaper
+super + a
+    wallpaper.sh
 
 # make sxhkd reload its configuration files:
 super + Escape
