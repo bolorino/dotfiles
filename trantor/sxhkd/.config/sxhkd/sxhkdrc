@@ -3,7 +3,7 @@
 #
 
 super + alt + Escape
-    pkill -x panel; killapps; bspc quit
+    killall -q polybar; killapps; bspc quit
 
 super + w
     bspc node -c
@@ -34,8 +34,11 @@ super + y
 super + m
     bspc node -s biggest
 
-super + {_,shift + }{h,j,k,l}
-    bspc node -{f,s} {west,south,north,east}
+super + shift + {h,j,k,l}
+	/usr/local/bin/bspwm_smart_move {west,south,north,east}
+
+# super + {_,shift + }{h,j,k,l}
+#    bspc node -{f,s} {west,south,north,east}
 
 super + {_,shift + }c
     bspc node -f {next,prev}
@@ -64,46 +67,43 @@ super + ctrl + {1-9}
 super + {_,shift + }{1-9,0}
     bspc {desktop -f,node -d} ^{1-9,10}
 
-~button1
-    bspc pointer -g focus
+super + g
+    bspc node --flag sticky -f
 
-super + button{1-3}
-    bspc pointer -g {move,resize_side,resize_corner}
+XF86Calculator
+    gnome-calculator
 
-super + !button{1-3}
-    bspc pointer -t %i %i
-
-super + @button{1-3}
-    bspc pointer -u
-
-# Monitors
-super + e
-    bspc monitor -f next
-
-# Super key changes left monitor desktop
-#super + {_,shift + }{1-9,0}
-#    bspc {desktop -f, window -d} {i, ii, iii, iv, v, vi, vii, viii, ix, x}
-
-# super + alt key changes right monitor desktops
-super + alt + {_,shift + }{1-9,0}
-    bspc {desktop -f, node -d} {Desktop2, Edit, Mail, Virtual, Vector}
+# move a floating window
+super + {Left,Down,Up,Right}
+    bspc node -v {-20 0,0 20,0 -20,20 0}
 
 #
 # wm independent hotkeys
 #
 
 super + Return
-    roxterm
+    termite
 
 super + p
     dmenu_run -l 30 -fn 'xft:Mensch for Powerline:size=10:hinting=slight:antialias=true' -nb '#2E3436' -nf '#CFE1FF' -sb '#175CB4'
 
-XF86Calculator
-    gnome-calculator
+# Rofi
+super + e
+    rofi -show window -theme glue_pro_blue
+
+super + r
+    rofi -show run -theme glue_pro_blue
+    
+ctrl + Print
+    scrot $HOME/'Imágenes/capturas/%Y-%m-%d_%H%M%S-$wx$h_scrot.png'
 
 # Change wallpaper
 super + a
     wallpaper.sh
+
+# Suspend 
+super + ctrl + s
+    systemctl suspend 
 
 # make sxhkd reload its configuration files:
 super + Escape

@@ -1,30 +1,7 @@
 #! /bin/sh
-# bspwm dual monitor configuration
-
-# Monitor setup
-bspc desktop VGA-0 -n "Main"
-bspc monitor VGA-0 -a "Web"
-bspc monitor VGA-0 -a "Devel"
-bspc monitor VGA-0 -a "Graph"
-bspc monitor VGA-0 -a "Chromium"
-bspc monitor VGA-0 -a "VMachine"
-
-bspc desktop DVI-1 -n "Util"
-bspc monitor DVI-1 -a "Edit"
-bspc monitor DVI-1 -a "Mail"
-bspc monitor DVI-1 -a "Virtual"
-bspc monitor DVI-1 -a "Vector"
-
-
-bspc config -m VGA-0 top_padding 14
-bspc config -m DVI-1 top_padding 14
-bspc config -m DVI-1 bottom_padding 14
-
-# move the focus to the main monitor
-bspc monitor -f VGA-0
 
 bspc config border_width 2
-bspc config window_gap 48
+bspc config window_gap 18
 bspc config split_ratio 0.50
 bspc config borderless_monocle true
 bspc config gapless_monocle true
@@ -34,16 +11,34 @@ bspc config focus_follows_pointer true
 
 bspc config wm_name LG3D
 
+bspc desktop HDMI-A-0 -n "main"
+bspc monitor HDMI-A-0 -a "web"
+bspc monitor HDMI-A-0 -a "edit"
+bspc monitor HDMI-A-0 -a "graph"
+bspc monitor HDMI-A-0 -a "chrom"
+bspc monitor HDMI-A-0 -a "inks"
+bspc monitor HDMI-A-0 -a "mail"
+bspc monitor HDMI-A-0 -a "devel"
+bspc monitor HDMI-A-0 -a "tools"
+bspc monitor HDMI-A-0 -a "last"
+
 # Rules
-bspc rule -a Firefox desktop=^2
-#bspc rule -a sublime_text desktop=^3
+bspc rule -a sublime_text desktop=^3
 bspc rule -a Gimp desktop=^4
+bspc rule -a Thunderbird desktop=^10
+bspc rule -a Firefox desktop=^7
 bspc rule -a Chromium desktop=^5
-bspc rule -a Thunderbird desktop=^9
-bspc rule -a file-roller state=floating
+bspc rule -a KeePassX desktop=^11
+
+bspc rule -a File-roller state=floating
 bspc rule -a vlc state=floating
 bspc rule -a recordMyDesktop state=floating
 bspc rule -a xclock state=floating
-bspc rule -a Thunar state=floating
+bspc rule -a Gnome-calculator state=floating
+bspc rule -a mpv state=floating
+bspc rule -a Koala state=floating
+bspc rule -a Hamster state=floating
 
-panel &
+$HOME/.config/polybar/launch.sh
+
+setbspwm &
