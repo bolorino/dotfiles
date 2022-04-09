@@ -3,7 +3,6 @@ upload = #FAC93C
 download = #3CFADA
 
 [bar/top]
-#monitor = HDMI-A-0
 monitor = DisplayPort-0
 locale = es_ES.UTF-8
 width = 100%
@@ -25,9 +24,9 @@ module-margin-left = 1
 module-margin-right = 1
 
 font-0 = Gidolinya:pixelsize=11;0
-font-1 = Font Awesome 5 Free:style=Regular:pixelsize=10;0
-font-2 = Font Awesome 5 Free:style=Solid:pixelsize=10;0
-font-3 = Font Awesome 5 Brands:style=Regular:pixelsize=10;0
+font-1 = Font Awesome 6 Free:style=Regular:pixelsize=10;0
+font-2 = Font Awesome 6 Free:style=Solid:pixelsize=10;0
+font-3 = Font Awesome 6 Brands:style=Regular:pixelsize=10;0
 
 modules-left = bspwm 
 modules-center = xwindow 
@@ -37,6 +36,40 @@ tray-position = right
 tray-detached = false
 tray-padding = 2
 tray-background = #aa222222
+
+wm-restack = bspwm
+
+scroll-up = #bspwm.prev
+scroll-down = #bspwm.next
+
+[bar/top_extra]
+monitor = HDMI-A-0
+locale = es_ES.UTF-8
+width = 100%
+height = 24
+offset-x = 0
+offset-y = 0
+
+background = #aa222222
+foreground = #eee
+
+underline-size = 2
+underline-color = #eee
+
+spacing = 1
+padding-left = 0
+padding-right = 0
+module-margin-left = 1
+module-margin-right = 1
+
+font-0 = Gidolinya:pixelsize=11;0
+font-1 = Font Awesome 6 Free:style=Regular:pixelsize=10;0
+font-2 = Font Awesome 6 Free:style=Solid:pixelsize=10;0
+font-3 = Font Awesome 6 Brands:style=Regular:pixelsize=10;0
+
+modules-left = bspwm 
+modules-center = xwindow 
+;modules-right = padding
 
 wm-restack = bspwm
 
@@ -53,19 +86,34 @@ type = internal/bspwm
 ; Only show workspaces defined on the same output as the bar
 ; NOTE: The bspwm and XRandR monitor names must match, which they do by default.
 ; Default: true
-pin-workspaces = false
+pin-workspaces = true
 
-ws-icon-0 = main;
-ws-icon-1 = web;
-ws-icon-2 = edit;
+ws-icon-0 = main;
+ws-icon-1 = util;
+ws-icon-2 = dev;
 ws-icon-3 = graph;
-ws-icon-4 = chrom;
-ws-icon-5 = pass;
-ws-icon-6 = mail;
-ws-icon-7 = devel;
-ws-icon-8 = tools; 
-ws-icon-9 = last;
-ws-icon-default = 
+ws-icon-4 = virt;
+
+ws-icon-5 = term;
+ws-icon-6 = web;
+ws-icon-7 = tool; 
+ws-icon-8 = pass;
+ws-icon-9 = mail;
+ws-icon-default = 
+;   
+
+; BSPWM names
+; bspc desktop DisplayPort-0 -n "main"
+; bspc monitor DisplayPort-0 -a "util"
+; bspc monitor DisplayPort-0 -a "dev"
+; bspc monitor DisplayPort-0 -a "graph"
+; bspc monitor DisplayPort-0 -a "virt"
+
+; bspc desktop HDMI-A-0 -n "term"
+; bspc monitor HDMI-A-0 -a "web"
+; bspc monitor HDMI-A-0 -a "tool"
+; bspc monitor HDMI-A-0 -a "pass"
+; bspc monitor HDMI-A-0 -a "mail"
 
 format = <label-state> <label-mode>
 
