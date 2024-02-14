@@ -1,4 +1,0 @@
-#!/bin/bash
-PUBLIC_IP=$(curl --connect-timeout 5 -s icanhazip.com)
-
-echo " %{F#DADADA}$PUBLIC_IP%{F-} "
