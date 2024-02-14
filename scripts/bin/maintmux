@@ -1,0 +1,32 @@
+#!/bin/bash
+# First check if the main session is already running
+SESSION_NAME="main"
+
+tmux has-session -t $SESSION_NAME 2>/dev/null
+
+if [ "$?" -eq 1 ] ; then
+    tmux new-session -s main -n zsh -d
+    tmux new-window -n music -t main
+
+    #Music
+    # mpd started as daemon
+    ##tmux send-keys -t main:2 'mpd' C-m
+    #tmux send-keys -t main:2 'mpdscribble' C-m
+    #tmux send-keys -t main:2 'ncmpcpp' C-m
+
+    # Servers
+    tmux new-window -n server -t main
+    #tmux send-keys -t main:3 'ssh helicon' C-m
+    tmux split-window -h
+    #tmux select-pane -L
+    # tmux send-keys -t main:3 'htop' C-m
+    tmux split-window -v
+    tmux select-pane -R
+    # tmux send-keys -t main:3 'sudo iftop' C-m
+    #tmux resize-pane -R 20
+
+    tmux select-window -t main:1
+    tmux attach -t main
+else
+    tmux attach-session -t $SESSION_NAME
+fi

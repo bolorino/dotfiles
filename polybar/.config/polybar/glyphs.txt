@@ -1,0 +1,9 @@
+ws-icon-0 = main;
+ws-icon-1 = web;
+ws-icon-2 = util;
+ws-icon-3 = dev;
+ws-icon-4 = graph;
+ws-icon-5 = virt;
+ws-icon-6 = mail;
+ws-icon-7 = pass;
+ws-icon-default = 
