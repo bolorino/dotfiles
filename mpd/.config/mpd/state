@@ -1,0 +1,27 @@
+sw_volume: 37
+audio_device_state:1:Pipewire Output
+audio_device_state:1:mpd_fifo
+state: pause
+current: 1
+time: 0.000000
+random: 0
+repeat: 0
+single: 1
+consume: 0
+crossfade: 3
+mixrampdb: 0.000000
+mixrampdelay: -1.000000
+playlist_begin
+0:metal/Celtic-Frost/1987 - Into The Pandemonium [Remastered]/01 Mexican Radio.mp3
+1:metal/Celtic-Frost/1987 - Into The Pandemonium [Remastered]/02 Mesmerized.mp3
+2:metal/Celtic-Frost/1987 - Into The Pandemonium [Remastered]/03 Inner Sanctum.mp3
+3:metal/Celtic-Frost/1987 - Into The Pandemonium [Remastered]/04 Tristesses De La Lune.mp3
+4:metal/Celtic-Frost/1987 - Into The Pandemonium [Remastered]/05 Babylon Fell.mp3
+5:metal/Celtic-Frost/1987 - Into The Pandemonium [Remastered]/06 Caress Into Oblivion.mp3
+6:metal/Celtic-Frost/1987 - Into The Pandemonium [Remastered]/07 One In Their Pride [Porthhole Mix].mp3
+7:metal/Celtic-Frost/1987 - Into The Pandemonium [Remastered]/08 I Won't Dance (The Elders Orient).mp3
+8:metal/Celtic-Frost/1987 - Into The Pandemonium [Remastered]/09 Sorrows Of The Moon.mp3
+9:metal/Celtic-Frost/1987 - Into The Pandemonium [Remastered]/10 Rex Irae [Requiem].mp3
+10:metal/Celtic-Frost/1987 - Into The Pandemonium [Remastered]/11 Oriental Masquerade.mp3
+11:metal/Celtic-Frost/1987 - Into The Pandemonium [Remastered]/12 One In Their Pride [Extended Mix].mp3
+playlist_end
