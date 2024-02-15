@@ -1,5 +1,8 @@
 #! /bin/sh
 
+# xrandr layout
+.screenlayout/1440px2.sh &
+
 bspc config border_width 2
 bspc config window_gap 9
 bspc config split_ratio 0.50
@@ -54,4 +57,4 @@ bspc rule -a mpv state=floating
 bspc rule -a Koala state=floating
 bspc rule -a Hamster state=floating
 
-setbspwm &
+${HOME}/bin/setbspwm.sh &

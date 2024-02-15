@@ -1,6 +1,4 @@
 #! /bin/sh
-# xrandr layout
-.screenlayout/1440px2-b.sh &
 
 # Enable composition
 picom &
