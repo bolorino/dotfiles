@@ -110,6 +110,10 @@ XF86AudioPlay
 XF86AudioLowerVolume
    wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-
 
+#Volume up
+XF86AudioRaiseVolume
+   wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+
+
 # Change wallpaper
 super + a
     ~/bin/wallpaper.sh
