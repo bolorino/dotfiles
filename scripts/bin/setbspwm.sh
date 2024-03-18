@@ -32,7 +32,7 @@ dunst &
 # Widgets
 nm-applet &
 kdeconnect-indicator &
-blueman-applet &
+# blueman-applet &
 owncloud &
 nextcloud &
 redshift-gtk &
