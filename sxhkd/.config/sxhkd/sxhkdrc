@@ -94,8 +94,8 @@ super + e
 ctrl + alt + a
     restart_audio
     
-# Restaurar Polybar
-ctrl + shift + p
+# Relaunch Polybar
+super + shift + p
 	killall -q polybar; ~/.config/polybar/launch.sh &
 
 # Capturar pantalla
